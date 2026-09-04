@@ -1,7 +1,7 @@
 # Kwakhe-Khumalo-prog6212-part1-Raceday
 
 # RaceDay
-A race-day management platform for creating events, running enrolments, and publishing results.
+A race-day management platform for creating events, running enrolments, and publishing results created using SQL in SSMS.
 ## Overview
 RaceDay lets event organisers set up races, break each race into categories (e.g. distances),
 and open them up for participants to join. Once a race has taken place, organisers capture
