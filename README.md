@@ -18,3 +18,9 @@ Browses available events and categories, enrols in a category if space allows, v
 enrolment history, and checks their published results.
 
 ## Repository Layout
+docs/
+  RaceDay_ERD.png                 - Entity Relationship Diagram
+  RaceDay_API_Endpoint_Plan.docx  - API endpoint plan
+  raceday_schema.sql              - Database schema and seed data
+  ci-success.png                  - Screenshot of a passing CI run
+.github/workflows/validate-docs.yml - Checks /docs has the required files
