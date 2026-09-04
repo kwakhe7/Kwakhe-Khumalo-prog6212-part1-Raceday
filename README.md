@@ -34,6 +34,8 @@ the ERD, the endpoint plan, and the SQL script.
 A walkthrough video covering the planning documents, ERD reasoning, endpoint plan choices, and a
 live run of the SQL script in SSMS will be attatched below.
 
+https://youtu.be/IQbBa-yHIio
+
 ## CI workflow
 
 <img width="725" height="207" alt="image" src="https://github.com/user-attachments/assets/7bea6bba-270f-4c29-903d-e623b048675c" />
