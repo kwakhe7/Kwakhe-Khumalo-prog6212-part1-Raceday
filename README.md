@@ -24,3 +24,7 @@ docs/
   raceday_schema.sql              - Database schema and seed data
   ci-success.png                  - Screenshot of a passing CI run
 .github/workflows/validate-docs.yml - Checks /docs has the required files
+
+## Continuous Integration
+A GitHub Actions workflow runs on every push to confirm the /docs folder exists and contains
+the ERD, the endpoint plan, and the SQL script.
