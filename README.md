@@ -16,3 +16,5 @@ results once the race is finished. Can only modify or delete events and categori
 ### Participant
 Browses available events and categories, enrols in a category if space allows, views their own
 enrolment history, and checks their published results.
+
+## Repository Layout
