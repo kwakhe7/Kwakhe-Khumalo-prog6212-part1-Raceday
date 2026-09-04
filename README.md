@@ -8,3 +8,7 @@ results per category so participants can check how they placed.
 
 ## User Roles
 This system supports two roles, each with different permissions.
+
+### Organiser
+Creates events, adds categories to their own events, reviews who has enrolled, and records
+results once the race is finished. Can only modify or delete events and categories they own.
