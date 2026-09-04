@@ -28,3 +28,8 @@ docs/
 ## Continuous Integration
 A GitHub Actions workflow runs on every push to confirm the /docs folder exists and contains
 the ERD, the endpoint plan, and the SQL script.
+
+## Walkthrough Video
+An unlisted video covering the planning documents, ERD reasoning, endpoint plan choices, and a
+live run of the SQL script in SSMS.
+
