@@ -39,3 +39,6 @@ live run of the SQL script in SSMS.
 <img width="725" height="207" alt="image" src="https://github.com/user-attachments/assets/7bea6bba-270f-4c29-903d-e623b048675c" />
 
 
+## License
+This project was created for academic purposes.
+
