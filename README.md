@@ -49,3 +49,10 @@ https://youtu.be/IQbBa-yHIio
 - Six entities that match the Part 1 ERD: Users, Venues, Events, Categories, Enrolments and Results.
 - Three venues are seeded automatically.
 
+### Authentication and role-based access
+- Registration with a role choice (Organiser or Participant). The server accepts only those two roles.
+- Passwords are hashed (PBKDF2 with a salt) and the original password is never stored.
+- Login starts a session using an encrypted, HttpOnly cookie that carries the user's ID and role.
+- Non-public endpoints return **401** without a session. Wrong-role requests return **403**.
+- Ownership checks: an Organiser can only change their own events, categories and results. A Participant can only see their own enrolments and results.
+
