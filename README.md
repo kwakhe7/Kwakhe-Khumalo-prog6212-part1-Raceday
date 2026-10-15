@@ -41,6 +41,11 @@ https://youtu.be/IQbBa-yHIio
 <img width="725" height="207" alt="image" src="https://github.com/user-attachments/assets/7bea6bba-270f-4c29-903d-e623b048675c" />
 
 
-## License
-This project was created for academic purposes.
+ Part 2: RESTful API Development
+
+
+### Project setup and database
+- ASP.NET Core Web API connected to SQL Server through EF Core Code-First, with migrations.
+- Six entities that match the Part 1 ERD: Users, Venues, Events, Categories, Enrolments and Results.
+- Three venues are seeded automatically.
 
