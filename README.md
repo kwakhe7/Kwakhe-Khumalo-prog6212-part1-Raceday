@@ -64,3 +64,7 @@ https://youtu.be/IQbBa-yHIio
 - **Event enrolments:** Participants enrol in a category, with capacity and duplicate checks. Organisers view enrolments for their events. Either role can cancel where allowed.
 - **Results:** Organisers capture finish time, position and status (Finished, DNF or DQ). Participants view their own results, and each category has a public leaderboard.
 
+### Swagger
+Every endpoint is visible and testable in the Swagger UI. Each one documents its purpose, the data it expects and the responses it returns. The root URL redirects to `/swagger`.
+
+
