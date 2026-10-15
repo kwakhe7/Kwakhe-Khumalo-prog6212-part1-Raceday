@@ -67,4 +67,10 @@ https://youtu.be/IQbBa-yHIio
 ### Swagger
 Every endpoint is visible and testable in the Swagger UI. Each one documents its purpose, the data it expects and the responses it returns. The root URL redirects to `/swagger`.
 
+### Unit and integration tests (xUnit)
+- Registration and login (success and failure).
+- Event management, including ownership rules.
+- Role rejection: 401 for anonymous requests, and 403 for Participants on Organiser endpoints and the other way round.
+- Event enrolments, including recording, duplicates and full categories.
+- End-to-end test of the whole flow: event, category, enrolment, result, and the participant viewing it.
 
