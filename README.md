@@ -56,3 +56,11 @@ https://youtu.be/IQbBa-yHIio
 - Non-public endpoints return **401** without a session. Wrong-role requests return **403**.
 - Ownership checks: an Organiser can only change their own events, categories and results. A Participant can only see their own enrolments and results.
 
+### Endpoints
+- **Authentication:** register, login, logout.
+- **User profile:** view and update own profile, and view another user's public profile.
+- **Events:** create, update and delete (Organiser), and view (public). Each event has a name, description, date, venue (location) and type (Run, Walk or Cycle).
+- **Categories:** Organisers define them per event (name, distance, capacity). Everyone can view them.
+- **Event enrolments:** Participants enrol in a category, with capacity and duplicate checks. Organisers view enrolments for their events. Either role can cancel where allowed.
+- **Results:** Organisers capture finish time, position and status (Finished, DNF or DQ). Participants view their own results, and each category has a public leaderboard.
+
