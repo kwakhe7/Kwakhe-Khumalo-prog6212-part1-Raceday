@@ -74,3 +74,9 @@ Every endpoint is visible and testable in the Swagger UI. Each one documents its
 - Event enrolments, including recording, duplicates and full categories.
 - End-to-end test of the whole flow: event, category, enrolment, result, and the participant viewing it.
 
+
+## How to run
+1. Check the connection string in `appsettings.json`.
+2. Run `dotnet ef database update` to create the database.
+3. Run the API and open `/swagger`.
+4. Run `dotnet test` to run the tests.
