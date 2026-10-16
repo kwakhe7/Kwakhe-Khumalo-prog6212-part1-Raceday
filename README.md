@@ -74,6 +74,9 @@ Every endpoint is visible and testable in the Swagger UI. Each one documents its
 - Event enrolments, including recording, duplicates and full categories.
 - End-to-end test of the whole flow: event, category, enrolment, result, and the participant viewing it.
 
+- <img width="887" height="432" alt="image" src="https://github.com/user-attachments/assets/9db0c8a3-e9bd-400e-bf8d-8a4c8aafa184" />
+
+
 
 ## How to run
 1. Check the connection string in `appsettings.json`.
