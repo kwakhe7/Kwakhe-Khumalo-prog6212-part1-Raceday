@@ -41,6 +41,45 @@ https://youtu.be/IQbBa-yHIio
 <img width="725" height="207" alt="image" src="https://github.com/user-attachments/assets/7bea6bba-270f-4c29-903d-e623b048675c" />
 
 
-## License
-This project was created for academic purposes.
+ Part 2: RESTful API Development
 
+
+### Project setup and database
+- ASP.NET Core Web API connected to SQL Server through EF Core Code-First, with migrations.
+- Six entities that match the Part 1 ERD: Users, Venues, Events, Categories, Enrolments and Results.
+- Three venues are seeded automatically.
+
+### Authentication and role-based access
+- Registration with a role choice (Organiser or Participant). The server accepts only those two roles.
+- Passwords are hashed (PBKDF2 with a salt) and the original password is never stored.
+- Login starts a session using an encrypted, HttpOnly cookie that carries the user's ID and role.
+- Non-public endpoints return **401** without a session. Wrong-role requests return **403**.
+- Ownership checks: an Organiser can only change their own events, categories and results. A Participant can only see their own enrolments and results.
+
+### Endpoints
+- **Authentication:** register, login, logout.
+- **User profile:** view and update own profile, and view another user's public profile.
+- **Events:** create, update and delete (Organiser), and view (public). Each event has a name, description, date, venue (location) and type (Run, Walk or Cycle).
+- **Categories:** Organisers define them per event (name, distance, capacity). Everyone can view them.
+- **Event enrolments:** Participants enrol in a category, with capacity and duplicate checks. Organisers view enrolments for their events. Either role can cancel where allowed.
+- **Results:** Organisers capture finish time, position and status (Finished, DNF or DQ). Participants view their own results, and each category has a public leaderboard.
+
+### Swagger
+Every endpoint is visible and testable in the Swagger UI. Each one documents its purpose, the data it expects and the responses it returns. The root URL redirects to `/swagger`.
+
+### Unit and integration tests (xUnit)
+- Registration and login (success and failure).
+- Event management, including ownership rules.
+- Role rejection: 401 for anonymous requests, and 403 for Participants on Organiser endpoints and the other way round.
+- Event enrolments, including recording, duplicates and full categories.
+- End-to-end test of the whole flow: event, category, enrolment, result, and the participant viewing it.
+
+- <img width="887" height="432" alt="image" src="https://github.com/user-attachments/assets/9db0c8a3-e9bd-400e-bf8d-8a4c8aafa184" />
+
+
+
+## How to run
+1. Check the connection string in `appsettings.json`.
+2. Run `dotnet ef database update` to create the database.
+3. Run the API and open `/swagger`.
+4. Run `dotnet test` to run the tests.
