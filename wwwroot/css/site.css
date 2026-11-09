@@ -1,22 +1,430 @@
+/* RaceDay theme: one palette, one pair of fonts, used on every page. */
+:root {
+    --rd-dark: #0b1220;
+    --rd-dark-2: #172033;
+    --rd-accent: #ff5a1f;
+    --rd-accent-dark: #e04a12;
+    --rd-gold: #ffc400;
+    --rd-light: #f4f6f9;
+    --rd-text: #1b2333;
+    --rd-green: #1e9e57;
+    --rd-red: #d64545;
+    --bs-body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --bs-body-color: var(--rd-text);
+    --bs-link-color: var(--rd-accent-dark);
+    --bs-link-hover-color: var(--rd-accent);
+}
+
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    background: var(--rd-light);
+    margin-bottom: 70px;
+}
+
+h1, h2, h3, h4, .rd-h, .rd-brand {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+/* Navigation */
+.rd-navbar {
+    background: var(--rd-dark);
+    border-bottom: 4px solid var(--rd-accent);
+}
+
+.rd-brand {
+    font-size: 1.7rem;
+    color: #fff !important;
+}
+
+    .rd-brand span {
+        color: var(--rd-accent);
+    }
+
+.rd-navbar .nav-link {
+    color: #d8deea;
+    font-weight: 500;
+}
+
+    .rd-navbar .nav-link:hover {
+        color: #fff;
+    }
+
+.rd-role-badge {
+    background: var(--rd-gold);
+    color: var(--rd-dark);
+    margin-left: .4rem;
+    text-transform: uppercase;
+    font-size: .7rem;
+}
+
+/* Buttons */
+.btn-rd {
+    background: var(--rd-accent);
+    border-color: var(--rd-accent);
+    color: #fff;
+    font-weight: 600;
+}
+
+    .btn-rd:hover, .btn-rd:focus {
+        background: var(--rd-accent-dark);
+        border-color: var(--rd-accent-dark);
+        color: #fff;
+    }
+
+.btn-rd-outline {
+    border: 2px solid var(--rd-accent);
+    color: #fff;
+    background: transparent;
+    font-weight: 600;
+}
+
+    .btn-rd-outline:hover {
+        background: var(--rd-accent);
+        color: #fff;
+    }
+
+/* Layout */
+.rd-main {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.rd-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background: var(--rd-dark);
+    color: #9aa6bd;
+    text-align: center;
+}
+
+/* Cards and hero */
+.rd-card {
+    border: 0;
+    border-top: 4px solid var(--rd-accent);
+    box-shadow: 0 6px 20px rgba(11, 18, 32, .08);
+}
+
+.rd-hero {
+    background: linear-gradient(135deg, var(--rd-dark) 0%, var(--rd-dark-2) 60%, #3a2a24 100%);
+    color: #fff;
+    border-radius: .75rem;
+    padding: 3rem 2rem;
+    border-left: 8px solid var(--rd-accent);
+}
+
+    .rd-hero h1 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+    }
+
+/* Enrolment status badges: the same colours on every page */
+.rd-status {
+    font-weight: 600;
+    letter-spacing: .03em;
+}
+
+.rd-status-confirmed {
+    background: var(--rd-green);
+    color: #fff;
+}
+
+.rd-status-cancelled {
+    background: var(--rd-red);
+    color: #fff;
+}
+
+/* Forms */
+.form-control:focus, .form-select:focus {
+    border-color: var(--rd-accent);
+    box-shadow: 0 0 0 .2rem rgba(255, 90, 31, .2);
+}
+
+/* ---------- Page headings and empty states ---------- */
+.rd-page-head {
+    margin-bottom: 1.5rem;
+}
+
+    .rd-page-head h1 {
+        font-size: 2.2rem;
+        margin-bottom: .1rem;
+    }
+
+.rd-empty {
+    background: #fff;
+    border: 2px dashed #cbd3e1;
+    border-radius: .75rem;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+}
+
+.rd-back {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* ---------- Event cards ---------- */
+.rd-event-card {
+    border: 0;
+    border-radius: .75rem;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(11, 18, 32, .08);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+    .rd-event-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 26px rgba(11, 18, 32, .14);
+    }
+
+.rd-event-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    background: var(--rd-dark);
+}
+
+    .rd-event-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+.rd-event-title {
+    font-size: 1.5rem;
+    margin-bottom: .35rem;
+}
+
+    .rd-event-title a {
+        color: var(--rd-dark);
+        text-decoration: none;
+    }
+
+        .rd-event-title a:hover {
+            color: var(--rd-accent-dark);
+        }
+
+.rd-event-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, .85);
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-weight: 700;
+    font-size: 2.4rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.rd-type-run {
+    background: linear-gradient(135deg, #ff5a1f, #b8300a);
+}
+
+.rd-type-walk {
+    background: linear-gradient(135deg, #1e9e57, #0d6b38);
+}
+
+.rd-type-cycle {
+    background: linear-gradient(135deg, #2f6fe4, #17408f);
+}
+
+.rd-type-pill {
+    position: absolute;
+    top: .75rem;
+    left: .75rem;
+    background: var(--rd-gold);
+    color: var(--rd-dark);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: .25rem .6rem;
+    border-radius: 999px;
+}
+
+.rd-type-pill-static {
+    position: static;
+    display: inline-block;
+}
+
+.rd-distance-pill {
+    background: var(--rd-dark);
+    color: #fff;
+    font-weight: 500;
+    margin-right: .25rem;
+}
+
+/* ---------- Event details ---------- */
+.rd-detail-banner {
+    width: 100%;
+    max-height: 380px;
+    aspect-ratio: 21 / 9;
+    object-fit: cover;
+    border-radius: .75rem;
+    display: block;
+    background: var(--rd-dark);
+}
+
+.rd-detail-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: .5rem 0 1rem;
+}
+
+.rd-facts li {
+    padding: .35rem 0;
+    border-bottom: 1px solid #e3e8f0;
+}
+
+.rd-facts strong {
+    display: inline-block;
+    min-width: 6rem;
+    color: var(--rd-dark-2);
+}
+
+/* ---------- Tables ---------- */
+.rd-table {
+    background: #fff;
+    border-radius: .5rem;
+    overflow: hidden;
+}
+
+    .rd-table thead th {
+        background: var(--rd-dark);
+        color: #fff;
+        border: 0;
+        font-size: .8rem;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+/* ---------- Result and status additions ---------- */
+.rd-status-amber {
+    background: var(--rd-gold);
+    color: var(--rd-dark);
+}
+
+.rd-stat {
+    background: #fff;
+    border-radius: .75rem;
+    padding: 1.1rem 1.25rem;
+    border-left: 6px solid var(--rd-accent);
+    box-shadow: 0 6px 20px rgba(11, 18, 32, .08);
+}
+
+.rd-stat-number {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--rd-dark);
+}
+
+.rd-stat-label {
+    color: #667389;
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-top: .25rem;
+}
+
+.rd-position {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--rd-accent-dark);
+}
+
+.rd-time {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+/* ---------- Profile ---------- */
+.rd-avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--rd-accent);
+    display: inline-block;
+    background: var(--rd-dark);
+}
+
+.rd-avatar-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-weight: 700;
+    font-size: 3.2rem;
+}
+
+/* ---------- Organiser pages ---------- */
+.rd-stat-small {
+    font-size: 1.7rem;
+    padding-top: .45rem;
+}
+
+.rd-thumb-cell {
+    width: 96px;
+}
+
+.rd-banner-thumb {
+    width: 88px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: .35rem;
+    display: block;
+    background: var(--rd-dark);
+}
+
+    .rd-banner-thumb.rd-event-placeholder {
+        font-size: 0;
+    }
+
+.rd-banner-preview {
+    max-width: 100%;
+    max-height: 220px;
+    border-radius: .5rem;
+    display: block;
+}
+
+/* ---------- Event management tabs and results entry ---------- */
+.rd-tabs .nav-link {
+    color: #4a5670;
+    font-weight: 600;
+    border: 0;
+    border-bottom: 3px solid transparent;
+}
+
+    .rd-tabs .nav-link:hover {
+        color: var(--rd-accent-dark);
+        border-bottom-color: #f3c3ae;
+    }
+
+    .rd-tabs .nav-link.active {
+        color: var(--rd-dark);
+        background: transparent;
+        border-bottom-color: var(--rd-accent);
+    }
+
+.rd-time-input {
+    min-width: 110px;
+    font-variant-numeric: tabular-nums;
+}
+
+.rd-position-input {
+    min-width: 80px;
 }

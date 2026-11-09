@@ -1,0 +1,24 @@
+﻿@model EventTabsModel
+
+<div class="rd-page-head">
+    <a asp-controller="OrganiserEvents" asp-action="Index" class="rd-back">&larr; My events</a>
+    <h1 class="rd-h mb-0">@Model.EventName</h1>
+</div>
+
+<ul class="nav nav-tabs rd-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link @(Model.Active == "categories" ? "active" : "")"
+           asp-controller="OrganiserCategories" asp-action="Index" asp-route-eventId="@Model.EventId">Categories</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.Active == "enrolments" ? "active" : "")"
+           asp-controller="OrganiserEnrolments" asp-action="Index" asp-route-eventId="@Model.EventId">Enrolments</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.Active == "results" ? "active" : "")"
+           asp-controller="OrganiserResults" asp-action="Index" asp-route-eventId="@Model.EventId">Results</a>
+    </li>
+    <li class="nav-item ms-auto">
+        <a class="nav-link" asp-controller="OrganiserEvents" asp-action="Edit" asp-route-id="@Model.EventId">Edit event</a>
+    </li>
+</ul>

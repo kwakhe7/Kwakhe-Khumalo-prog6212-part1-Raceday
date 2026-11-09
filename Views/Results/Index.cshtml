@@ -1,0 +1,74 @@
+﻿@model MyResultsViewModel
+@{
+    ViewData["Title"] = "My results";
+}
+
+<div class="rd-page-head">
+    <h1 class="rd-h">My results</h1>
+    <p class="text-muted mb-0">Your race history across the events you have completed.</p>
+</div>
+
+@if (!Model.Rows.Any())
+{
+    <div class="rd-empty">
+        <h2 class="rd-h">No results yet</h2>
+        <p class="text-muted mb-3">Results appear here after the organiser records them when an event is over.</p>
+        <a class="btn btn-rd" asp-controller="Enrolments" asp-action="Index">View my enrolments</a>
+    </div>
+}
+else
+{
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="rd-stat">
+                <div class="rd-stat-number">@Model.RacesFinished</div>
+                <div class="rd-stat-label">Races finished</div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="rd-stat">
+                <div class="rd-stat-number">@(Model.BestPosition.HasValue ? RaceFormat.Ordinal(Model.BestPosition.Value) : "-")</div>
+                <div class="rd-stat-label">Best position</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table rd-table align-middle">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Finish time</th>
+                    <th>Position</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Rows)
+                {
+                    var result = row.Result;
+                    <tr>
+                        <td class="fw-semibold">
+                            <a asp-controller="Events" asp-action="Details" asp-route-id="@result.EventId">@result.EventName</a>
+                        </td>
+                        <td>@(row.EventDate.HasValue ? row.EventDate.Value.ToString("d MMM yyyy") : "-")</td>
+                        <td>@result.CategoryName</td>
+                        <td class="rd-time">@RaceFormat.Time(result.FinishTime)</td>
+                        <td>
+                            @if (result.Status == "Finished" && result.Position.HasValue)
+                            {
+                                <span class="rd-position">@RaceFormat.Ordinal(result.Position.Value)</span>
+                                <span class="text-muted">of @result.TotalFinishers finishers</span>
+                            }
+                            else
+                            {
+                                <partial name="_StatusBadge" model="result.Status" />
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

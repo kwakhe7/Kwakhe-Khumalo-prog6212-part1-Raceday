@@ -1,0 +1,24 @@
+﻿@model CategoryFormViewModel
+
+<form method="post" action="@Model.FormAction" asp-antiforgery="true" novalidate>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" maxlength="100" placeholder="For example 10km Individual or Under 20" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="row">
+        <div class="col-6 mb-3">
+            <label asp-for="DistanceKm" class="form-label"></label>
+            <input asp-for="DistanceKm" type="number" step="0.01" min="0.01" class="form-control" />
+            <span asp-validation-for="DistanceKm" class="text-danger"></span>
+        </div>
+        <div class="col-6 mb-3">
+            <label asp-for="MaxParticipants" class="form-label"></label>
+            <input asp-for="MaxParticipants" type="number" min="1" class="form-control" />
+            <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-rd">@Model.SubmitLabel</button>
+</form>

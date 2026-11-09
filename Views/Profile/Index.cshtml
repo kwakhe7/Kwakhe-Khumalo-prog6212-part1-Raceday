@@ -1,0 +1,96 @@
+﻿@model ProfileViewModel
+@{
+    ViewData["Title"] = "My profile";
+    var initials = string.Concat(Model.Name.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(2).Select(part => char.ToUpper(part[0])));
+    if (initials.Length == 0) { initials = "?"; }
+}
+
+<div class="rd-page-head">
+    <h1 class="rd-h">My profile</h1>
+    <p class="text-muted mb-0">Keep your details up to date.</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card rd-card text-center">
+            <div class="card-body p-4">
+                @if (Model.HasProfilePicture)
+                {
+                    <img class="rd-avatar mb-3" alt="Your profile picture"
+                         src="@Url.Action("Picture", "Images", new { id = Model.UserId, v = DateTime.UtcNow.Ticks })" />
+                }
+                else
+                {
+                    <div class="rd-avatar rd-avatar-initials mb-3">@initials</div>
+                }
+
+                <h2 class="h5 mb-0">@Model.Name</h2>
+                <p class="mb-3"><span class="badge rd-role-badge">@Model.Role</span></p>
+
+                <form asp-controller="Profile" asp-action="UploadPicture" method="post" enctype="multipart/form-data" id="pictureForm">
+                    <label for="picture" class="form-label small text-muted">JPG, PNG or WebP, up to 5 MB</label>
+                    <input id="picture" name="picture" type="file" class="form-control mb-2"
+                           accept="image/png,image/jpeg,image/webp" />
+                    <div id="pictureError" class="text-danger small mb-2" role="alert"></div>
+                    <button type="submit" class="btn btn-rd w-100">Upload picture</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card rd-card">
+            <div class="card-body p-4">
+                <h2 class="rd-h mb-3">Personal information</h2>
+
+                <form asp-controller="Profile" asp-action="UpdateDetails" method="post" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" autocomplete="name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control" autocomplete="email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Role</label>
+                            <input class="form-control" value="@Model.Role" disabled />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Member since</label>
+                            <input class="form-control" value="@Model.CreatedAt.ToString("d MMMM yyyy")" disabled />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-rd">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Friendly check before upload. The API still makes the final decision.
+        document.getElementById('pictureForm').addEventListener('submit', function (event) {
+            var input = document.getElementById('picture');
+            var error = document.getElementById('pictureError');
+            error.textContent = '';
+
+            if (!input.files || input.files.length === 0) {
+                error.textContent = 'Please choose an image first.';
+                event.preventDefault();
+                return;
+            }
+            if (input.files[0].size > 5 * 1024 * 1024) {
+                error.textContent = 'That image is larger than 5 MB. Please choose a smaller one.';
+                event.preventDefault();
+            }
+        });
+    </script>
+}

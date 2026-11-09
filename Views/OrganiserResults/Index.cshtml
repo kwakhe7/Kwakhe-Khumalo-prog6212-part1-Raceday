@@ -1,0 +1,98 @@
+﻿@model ResultsEntryPageViewModel
+@{
+    ViewData["Title"] = "Results";
+    var tabs = new EventTabsModel(Model.EventId, Model.EventName, "results");
+}
+
+<partial name="_EventTabs" model="tabs" />
+
+@if (!Model.EventHasStarted)
+{
+    <div class="alert alert-info" role="alert">
+        Results can be entered from the day of the event (@Model.EventDate.ToString("d MMMM yyyy")). Come back then to record finish times and positions.
+    </div>
+}
+else
+{
+    <p class="text-muted">
+        Enter each finisher's time as hours:minutes:seconds (for example 00:45:12) and their position, then save.
+        Saved results are published straight away: participants see them under My results.
+    </p>
+}
+
+@if (!Model.Groups.Any())
+{
+    <div class="rd-empty">
+        <h2 class="rd-h">No categories yet</h2>
+        <p class="text-muted mb-0">Add a category and wait for participants to enrol.</p>
+    </div>
+}
+
+@foreach (var group in Model.Groups)
+{
+    <h2 class="rd-h mt-4">
+        @group.Category.Name
+        <span class="text-muted fs-6">@group.Category.DistanceKm.ToString("0.##") km</span>
+    </h2>
+
+    @if (!group.Rows.Any())
+    {
+        <p class="text-muted">There are no confirmed enrolments in this category.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table rd-table align-middle">
+                <thead>
+                    <tr><th>Participant</th><th>Finish time</th><th>Position</th><th>Outcome</th><th>Saved</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in group.Rows)
+                    {
+                        var formId = "result-" + row.Enrolment.EnrolmentId;
+                        var status = row.Result?.Status ?? "Finished";
+                        var timeText = row.Result is not null && row.Result.FinishTime.HasValue ? RaceFormat.Time(row.Result.FinishTime) : "";
+                        <tr>
+                            <td class="fw-semibold">
+                                @row.Enrolment.ParticipantName
+                                <form id="@formId" asp-controller="OrganiserResults" asp-action="Save" asp-route-eventId="@Model.EventId" method="post">
+                                    <input type="hidden" name="enrolmentId" value="@row.Enrolment.EnrolmentId" />
+                                    <input type="hidden" name="resultId" value="@row.Result?.ResultId" />
+                                </form>
+                            </td>
+                            <td>
+                                <input form="@formId" name="finishTime" class="form-control form-control-sm rd-time-input"
+                                       placeholder="hh:mm:ss" pattern="[0-9]{1,2}:[0-5][0-9]:[0-5][0-9]" value="@timeText"
+                                       disabled="@(!Model.EventHasStarted)" />
+                            </td>
+                            <td>
+                                <input form="@formId" name="position" type="number" min="1" class="form-control form-control-sm rd-position-input"
+                                       value="@row.Result?.Position" disabled="@(!Model.EventHasStarted)" />
+                            </td>
+                            <td>
+                                <select form="@formId" name="status" class="form-select form-select-sm" disabled="@(!Model.EventHasStarted)">
+                                    <option value="Finished" selected="@(status == "Finished")">Finished</option>
+                                    <option value="DNF" selected="@(status == "DNF")">Did not finish</option>
+                                    <option value="DQ" selected="@(status == "DQ")">Disqualified</option>
+                                </select>
+                            </td>
+                            <td>
+                                @if (row.Result is not null)
+                                {
+                                    <partial name="_StatusBadge" model="row.Result.Status" />
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">No result</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <button type="submit" form="@formId" class="btn btn-rd btn-sm" disabled="@(!Model.EventHasStarted)">Save</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

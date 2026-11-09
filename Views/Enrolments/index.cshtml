@@ -1,0 +1,81 @@
+﻿@model MyEnrolmentsViewModel
+@{
+    ViewData["Title"] = "My enrolments";
+}
+
+<div class="rd-page-head">
+    <h1 class="rd-h">My enrolments</h1>
+    <p class="text-muted mb-0">Every event you have entered, and the status of each entry.</p>
+</div>
+
+@if (!Model.Upcoming.Any() && !Model.Past.Any())
+{
+    <div class="rd-empty">
+        <h2 class="rd-h">No enrolments yet</h2>
+        <p class="text-muted">When you enter an event it will show up here.</p>
+        <a class="btn btn-rd" asp-controller="Home" asp-action="Index">Find an event</a>
+    </div>
+}
+else
+{
+    @if (Model.Upcoming.Any())
+    {
+        <h2 class="rd-h mt-2">Upcoming</h2>
+        <div class="table-responsive">
+            <table class="table rd-table align-middle">
+                <thead>
+                    <tr><th>Event</th><th>Date</th><th>Category</th><th>Enrolled on</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var enrolment in Model.Upcoming)
+                    {
+                        <tr>
+                            <td class="fw-semibold">
+                                <a asp-controller="Events" asp-action="Details" asp-route-id="@enrolment.EventId">@enrolment.EventName</a>
+                            </td>
+                            <td>@enrolment.EventDate.ToString("d MMM yyyy")</td>
+                            <td>@enrolment.CategoryName</td>
+                            <td>@enrolment.EnrolmentDate.ToString("d MMM yyyy")</td>
+                            <td><partial name="_StatusBadge" model="enrolment.Status" /></td>
+                            <td class="text-end">
+                                @if (enrolment.Status == "Confirmed")
+                                {
+                                    <form asp-controller="Enrolments" asp-action="Cancel" asp-route-id="@enrolment.EnrolmentId" method="post"
+                                          class="d-inline" onsubmit="return confirm('Cancel this enrolment?');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Cancel</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    @if (Model.Past.Any())
+    {
+        <h2 class="rd-h mt-4">Past events</h2>
+        <div class="table-responsive">
+            <table class="table rd-table align-middle">
+                <thead>
+                    <tr><th>Event</th><th>Date</th><th>Category</th><th>Enrolled on</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var enrolment in Model.Past)
+                    {
+                        <tr>
+                            <td class="fw-semibold">
+                                <a asp-controller="Events" asp-action="Details" asp-route-id="@enrolment.EventId">@enrolment.EventName</a>
+                            </td>
+                            <td>@enrolment.EventDate.ToString("d MMM yyyy")</td>
+                            <td>@enrolment.CategoryName</td>
+                            <td>@enrolment.EnrolmentDate.ToString("d MMM yyyy")</td>
+                            <td><partial name="_StatusBadge" model="enrolment.Status" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

@@ -1,0 +1,19 @@
+﻿@model EventFormViewModel
+@{
+    ViewData["Title"] = "Edit event";
+}
+
+<div class="rd-page-head">
+    <h1 class="rd-h">Edit event</h1>
+    <p class="text-muted mb-0">Change the details or replace the banner image.</p>
+</div>
+
+<div class="card rd-card">
+    <div class="card-body p-4">
+        <partial name="_EventForm" model="Model" />
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

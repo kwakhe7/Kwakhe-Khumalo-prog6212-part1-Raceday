@@ -1,0 +1,14 @@
+﻿@model string
+@{
+    // One partial for every status badge, so the colours are identical on every page.
+    var css = Model switch
+    {
+        "Confirmed" => "rd-status-confirmed",
+        "Finished" => "rd-status-confirmed",
+        "Cancelled" => "rd-status-cancelled",
+        "DQ" => "rd-status-cancelled",
+        "DNF" => "rd-status-amber",
+        _ => "bg-secondary"
+    };
+}
+<span class="badge rd-status @css">@Model</span>

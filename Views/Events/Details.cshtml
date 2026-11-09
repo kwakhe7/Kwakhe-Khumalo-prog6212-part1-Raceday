@@ -1,0 +1,96 @@
+﻿@model EventDetailsViewModel
+@{
+    var ev = Model.Event;
+    ViewData["Title"] = ev.Name;
+}
+
+<a asp-controller="Home" asp-action="Index" class="rd-back">&larr; All events</a>
+
+<div class="rd-detail-hero mt-2">
+    @if (ev.HasBanner)
+    {
+        <img src="@Url.Action("Banner", "Images", new { id = ev.EventId })" alt="Banner for @ev.Name" class="rd-detail-banner" />
+    }
+    else
+    {
+        <div class="rd-detail-banner rd-event-placeholder rd-type-@ev.EventType.ToLower()"><span>@ev.EventType</span></div>
+    }
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-8">
+        <span class="rd-type-pill rd-type-pill-static">@ev.EventType</span>
+        <h1 class="rd-h rd-detail-title">@ev.Name</h1>
+
+        <ul class="rd-facts list-unstyled">
+            <li><strong>Date</strong> @ev.EventDate.ToString("dddd, d MMMM yyyy")</li>
+            <li><strong>Venue</strong> @ev.Venue.Name, @ev.Venue.Address, @ev.Venue.City</li>
+            <li><strong>Organiser</strong> @ev.OrganiserName</li>
+        </ul>
+
+        <h2 class="rd-h">About this event</h2>
+        <p>@(string.IsNullOrWhiteSpace(ev.Description) ? "The organiser has not added a description yet." : ev.Description)</p>
+    </div>
+</div>
+
+<h2 class="rd-h mt-4">Categories</h2>
+@if (!ev.Categories.Any())
+{
+    <p class="text-muted">The organiser has not added any categories yet.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table rd-table align-middle">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Distance</th>
+                    <th>Places left</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in ev.Categories)
+                {
+                    <tr>
+                        <td class="fw-semibold">@category.Name</td>
+                        <td>@category.DistanceKm.ToString("0.##") km</td>
+                        <td>@category.PlacesLeft of @category.MaxParticipants</td>
+                        <td class="text-end">
+                            @if (!Model.IsUpcoming)
+                            {
+                                <span class="text-muted">Closed</span>
+                            }
+                            else if (Model.EnrolledCategoryIds.Contains(category.CategoryId))
+                            {
+                                <span class="badge rd-status rd-status-confirmed">Enrolled</span>
+                            }
+                            else if (category.PlacesLeft == 0)
+                            {
+                                <span class="badge bg-secondary">Full</span>
+                            }
+                            else if (Model.IsParticipant)
+                            {
+                                <form asp-controller="Events" asp-action="Enrol" method="post" class="d-inline">
+                                    <input type="hidden" name="eventId" value="@ev.EventId" />
+                                    <input type="hidden" name="categoryId" value="@category.CategoryId" />
+                                    <button type="submit" class="btn btn-rd btn-sm">Enrol</button>
+                                </form>
+                            }
+                            else if (!Model.IsLoggedIn)
+                            {
+                                <a class="btn btn-rd btn-sm" asp-controller="Account" asp-action="Login"
+                                   asp-route-returnUrl="@Url.Action("Details", "Events", new { id = ev.EventId })">Log in to enrol</a>
+                            }
+                            else
+                            {
+                                <span class="text-muted small">Participants only</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
