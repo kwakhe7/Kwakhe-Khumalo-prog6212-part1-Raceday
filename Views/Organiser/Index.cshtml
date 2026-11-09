@@ -1,0 +1,117 @@
+﻿@model OrganiserDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="rd-page-head d-flex flex-wrap justify-content-between align-items-end gap-2">
+    <div>
+        <h1 class="rd-h">Dashboard</h1>
+        <p class="text-muted mb-0">Your events at a glance.</p>
+    </div>
+    <a class="btn btn-rd" asp-controller="OrganiserEvents" asp-action="Create">Create event</a>
+</div>
+
+@if (Model.Error is not null)
+{
+    <div class="alert alert-warning" role="alert">@Model.Error</div>
+}
+else if (Model.TotalEvents == 0)
+{
+    <div class="rd-empty">
+        <h2 class="rd-h">No events yet</h2>
+        <p class="text-muted mb-3">Create your first event and participants can start entering.</p>
+        <a class="btn btn-rd" asp-controller="OrganiserEvents" asp-action="Create">Create your first event</a>
+    </div>
+}
+else
+{
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="rd-stat">
+                <div class="rd-stat-number">@Model.TotalEvents</div>
+                <div class="rd-stat-label">Events created</div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="rd-stat">
+                <div class="rd-stat-number">@Model.UpcomingCount</div>
+                <div class="rd-stat-label">Upcoming events</div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="rd-stat">
+                <div class="rd-stat-number">@Model.TotalEnrolments</div>
+                <div class="rd-stat-label">Total enrolments</div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="rd-stat">
+                <div class="rd-stat-number rd-stat-small">@(Model.NextEvent is null ? "-" : Model.NextEvent.EventDate.ToString("d MMM yyyy"))</div>
+                <div class="rd-stat-label">Next event@(Model.NextEvent is null ? "" : ": " + Model.NextEvent.Name)</div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="rd-h">Upcoming events</h2>
+    @if (!Model.Upcoming.Any())
+    {
+        <p class="text-muted">You have no upcoming events.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table rd-table align-middle">
+                <thead>
+                    <tr><th>Date</th><th>Event</th><th>Venue</th><th>Type</th><th>Enrolments</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var ev in Model.Upcoming)
+                    {
+                        <tr>
+                            <td class="text-nowrap">@ev.EventDate.ToString("ddd, d MMM yyyy")</td>
+                            <td class="fw-semibold">@ev.Name</td>
+                            <td>@ev.Venue.Name</td>
+                            <td>@ev.EventType</td>
+                            <td>
+                                <strong>@ev.TotalEnrolments</strong>
+                                <span class="text-muted">of @ev.Categories.Sum(c => c.MaxParticipants) places</span>
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <a class="btn btn-outline-dark btn-sm" asp-controller="Events" asp-action="Details" asp-route-id="@ev.EventId">View</a>
+                                <a class="btn btn-dark btn-sm" asp-controller="OrganiserCategories" asp-action="Index" asp-route-eventId="@ev.EventId">Manage</a>
+                                <a class="btn btn-rd btn-sm" asp-controller="OrganiserEvents" asp-action="Edit" asp-route-id="@ev.EventId">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    @if (Model.Past.Any())
+    {
+        <h2 class="rd-h mt-4">Past events</h2>
+        <div class="table-responsive">
+            <table class="table rd-table align-middle">
+                <thead>
+                    <tr><th>Date</th><th>Event</th><th>Venue</th><th>Type</th><th>Enrolments</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var ev in Model.Past)
+                    {
+                        <tr>
+                            <td class="text-nowrap">@ev.EventDate.ToString("ddd, d MMM yyyy")</td>
+                            <td class="fw-semibold">@ev.Name</td>
+                            <td>@ev.Venue.Name</td>
+                            <td>@ev.EventType</td>
+                            <td><strong>@ev.TotalEnrolments</strong></td>
+                            <td class="text-end">
+                                <a class="btn btn-dark btn-sm" asp-controller="OrganiserCategories" asp-action="Index" asp-route-eventId="@ev.EventId">Manage</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

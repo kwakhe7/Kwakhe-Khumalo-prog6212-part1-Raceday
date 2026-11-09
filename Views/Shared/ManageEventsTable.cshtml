@@ -1,0 +1,47 @@
+﻿@using RACEDAY_P3.Services
+@model List<EventDto>
+
+<div class="table-responsive">
+    <table class="table rd-table align-middle">
+        <thead>
+            <tr><th></th><th>Event</th><th>Date</th><th>Venue</th><th>Type</th><th>Distances</th><th>Enrolments</th><th></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var ev in Model)
+            {
+                <tr>
+                    <td class="rd-thumb-cell">
+                        @if (ev.HasBanner)
+                        {
+                            <img class="rd-banner-thumb" alt="" src="@Url.Action("Banner", "Images", new { id = ev.EventId })" loading="lazy" />
+                        }
+                        else
+                        {
+                            <div class="rd-banner-thumb rd-event-placeholder rd-type-@ev.EventType.ToLower()"></div>
+                        }
+                    </td>
+                    <td class="fw-semibold">@ev.Name</td>
+                    <td class="text-nowrap">@ev.EventDate.ToString("d MMM yyyy")</td>
+                    <td>@ev.Venue.Name</td>
+                    <td>@ev.EventType</td>
+                    <td>
+                        @foreach (var category in ev.Categories)
+                        {
+                            <span class="badge rd-distance-pill">@category.DistanceKm.ToString("0.##") km</span>
+                        }
+                    </td>
+                    <td><strong>@ev.TotalEnrolments</strong></td>
+                    <td class="text-end text-nowrap">
+                        <a class="btn btn-outline-dark btn-sm" asp-controller="Events" asp-action="Details" asp-route-id="@ev.EventId">View</a>
+                        <a class="btn btn-dark btn-sm" asp-controller="OrganiserCategories" asp-action="Index" asp-route-eventId="@ev.EventId">Manage</a>
+                        <a class="btn btn-rd btn-sm" asp-controller="OrganiserEvents" asp-action="Edit" asp-route-id="@ev.EventId">Edit</a>
+                        <form asp-controller="OrganiserEvents" asp-action="Delete" asp-route-id="@ev.EventId" method="post" class="d-inline"
+                              onsubmit="return confirm('Delete this event? This also removes its categories, enrolments and results.');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

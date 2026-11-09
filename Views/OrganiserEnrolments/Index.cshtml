@@ -1,0 +1,61 @@
+﻿@model EventEnrolmentsViewModel
+@{
+    ViewData["Title"] = "Enrolments";
+    var tabs = new EventTabsModel(Model.EventId, Model.EventName, "enrolments");
+}
+
+<partial name="_EventTabs" model="tabs" />
+
+@if (Model.Error is not null)
+{
+    <div class="alert alert-warning" role="alert">@Model.Error</div>
+}
+
+@if (!Model.Groups.Any())
+{
+    <div class="rd-empty">
+        <h2 class="rd-h">No categories yet</h2>
+        <p class="text-muted mb-3">Add a category first. Participants enrol in a category.</p>
+        <a class="btn btn-rd" asp-controller="OrganiserCategories" asp-action="Index" asp-route-eventId="@Model.EventId">Add a category</a>
+    </div>
+}
+else
+{
+    <p class="lead">
+        <strong>@Model.ConfirmedCount</strong> confirmed @(Model.ConfirmedCount == 1 ? "enrolment" : "enrolments")
+    </p>
+
+    @foreach (var group in Model.Groups)
+    {
+        <h2 class="rd-h mt-4">
+            @group.Category.Name
+            <span class="text-muted fs-6">@group.Category.DistanceKm.ToString("0.##") km</span>
+        </h2>
+
+        @if (!group.Enrolments.Any())
+        {
+            <p class="text-muted">Nobody has enrolled in this category yet.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table rd-table align-middle">
+                    <thead>
+                        <tr><th>Participant</th><th>Category</th><th>Enrolled on</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var enrolment in group.Enrolments)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@enrolment.ParticipantName</td>
+                                <td>@enrolment.CategoryName</td>
+                                <td>@enrolment.EnrolmentDate.ToString("d MMM yyyy")</td>
+                                <td><partial name="_StatusBadge" model="enrolment.Status" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+}

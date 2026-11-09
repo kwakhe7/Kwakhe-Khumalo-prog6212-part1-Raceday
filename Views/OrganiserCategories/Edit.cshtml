@@ -1,0 +1,24 @@
+﻿@model CategoryEditPageViewModel
+@{
+    ViewData["Title"] = "Edit category";
+    var tabs = new EventTabsModel(Model.EventId, Model.EventName, "categories");
+}
+
+<partial name="_EventTabs" model="tabs" />
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card rd-card">
+            <div class="card-body p-4">
+                <h2 class="rd-h h4 mb-3">Edit category</h2>
+                <partial name="_CategoryForm" model="Model.Form" />
+                <a class="btn btn-outline-dark mt-3" asp-controller="OrganiserCategories" asp-action="Index"
+                   asp-route-eventId="@Model.EventId">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

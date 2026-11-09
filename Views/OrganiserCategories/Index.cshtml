@@ -1,0 +1,64 @@
+﻿@model CategoriesPageViewModel
+@{
+    ViewData["Title"] = "Categories";
+    var tabs = new EventTabsModel(Model.EventId, Model.EventName, "categories");
+}
+
+<partial name="_EventTabs" model="tabs" />
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <h2 class="rd-h">Categories</h2>
+        @if (!Model.Categories.Any())
+        {
+            <div class="rd-empty">
+                <p class="text-muted mb-0">No categories yet. Add the first one using the form.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table rd-table align-middle">
+                    <thead>
+                        <tr><th>Category</th><th>Distance</th><th>Places</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@category.Name</td>
+                                <td>@category.DistanceKm.ToString("0.##") km</td>
+                                <td>
+                                    <strong>@category.ConfirmedEnrolments</strong>
+                                    <span class="text-muted">of @category.MaxParticipants taken</span>
+                                </td>
+                                <td class="text-end text-nowrap">
+                                    <a class="btn btn-rd btn-sm" asp-controller="OrganiserCategories" asp-action="Edit"
+                                       asp-route-eventId="@Model.EventId" asp-route-id="@category.CategoryId">Edit</a>
+                                    <form asp-controller="OrganiserCategories" asp-action="Delete"
+                                          asp-route-eventId="@Model.EventId" asp-route-id="@category.CategoryId" method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this category? A category with confirmed enrolments cannot be deleted.');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card rd-card">
+            <div class="card-body p-4">
+                <h2 class="rd-h h4 mb-3">Add a category</h2>
+                <partial name="_CategoryForm" model="Model.NewCategory" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,39 @@
+﻿@model ManageEventsViewModel
+@{
+    ViewData["Title"] = "My events";
+}
+
+<div class="rd-page-head d-flex flex-wrap justify-content-between align-items-end gap-2">
+    <div>
+        <h1 class="rd-h">My events</h1>
+        <p class="text-muted mb-0">Create, edit and delete your events.</p>
+    </div>
+    <a class="btn btn-rd" asp-controller="OrganiserEvents" asp-action="Create">Create event</a>
+</div>
+
+@if (!Model.Upcoming.Any() && !Model.Past.Any())
+{
+    <div class="rd-empty">
+        <h2 class="rd-h">No events yet</h2>
+        <p class="text-muted mb-3">Create your first event and participants can start entering.</p>
+        <a class="btn btn-rd" asp-controller="OrganiserEvents" asp-action="Create">Create your first event</a>
+    </div>
+}
+else
+{
+    <h2 class="rd-h">Upcoming</h2>
+    @if (!Model.Upcoming.Any())
+    {
+        <p class="text-muted">You have no upcoming events.</p>
+    }
+    else
+    {
+        <partial name="_ManageEventsTable" model="Model.Upcoming" />
+    }
+
+    @if (Model.Past.Any())
+    {
+        <h2 class="rd-h mt-4">Past</h2>
+        <partial name="_ManageEventsTable" model="Model.Past" />
+    }
+}

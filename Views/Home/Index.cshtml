@@ -1,8 +1,78 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model HomeIndexViewModel
+@{
+    ViewData["Title"] = "Upcoming events";
+    var f = Model.Filter;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="rd-page-head">
+    <h1 class="rd-h">Upcoming events</h1>
+    <p class="text-muted mb-0">Find your next run, walk or ride.</p>
 </div>
+
+<form method="get" asp-controller="Home" asp-action="Index" class="card rd-card mb-4">
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-lg-3 col-md-6">
+                <label class="form-label" for="q">Search</label>
+                <input id="q" name="q" value="@f.Q" class="form-control" placeholder="Event name" />
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <label class="form-label" for="eventType">Type</label>
+                <select id="eventType" name="eventType" class="form-select">
+                    <option value="">All types</option>
+                    @foreach (var type in new[] { "Run", "Walk", "Cycle" })
+                    {
+                        <option value="@type" selected="@(f.EventType == type)">@type</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <label class="form-label" for="venueId">Venue</label>
+                <select id="venueId" name="venueId" class="form-select">
+                    <option value="">All venues</option>
+                    @foreach (var venue in Model.Venues)
+                    {
+                        <option value="@venue.VenueId" selected="@(f.VenueId == venue.VenueId)">@venue.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-2 col-md-3 col-6">
+                <label class="form-label" for="from">From</label>
+                <input id="from" name="from" type="date" value="@(f.From?.ToString("yyyy-MM-dd"))" class="form-control" />
+            </div>
+            <div class="col-lg-2 col-md-3 col-6">
+                <label class="form-label" for="to">To</label>
+                <input id="to" name="to" type="date" value="@(f.To?.ToString("yyyy-MM-dd"))" class="form-control" />
+            </div>
+            <div class="col-lg-1 col-12 d-grid">
+                <button type="submit" class="btn btn-rd">Go</button>
+            </div>
+        </div>
+        <div class="mt-2">
+            <a asp-controller="Home" asp-action="Index" class="small">Clear filters</a>
+        </div>
+    </div>
+</form>
+
+@if (Model.Error is not null)
+{
+    <div class="alert alert-warning" role="alert">@Model.Error</div>
+}
+else if (!Model.Events.Any())
+{
+    <div class="rd-empty">
+        <h2 class="rd-h">No events found</h2>
+        <p class="text-muted mb-0">Try a different search, or clear the filters to see everything that is coming up.</p>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var ev in Model.Events)
+        {
+            <div class="col">
+                <partial name="_EventCard" model="ev" />
+            </div>
+        }
+    </div>
+}
